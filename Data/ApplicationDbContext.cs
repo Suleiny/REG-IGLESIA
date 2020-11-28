@@ -114,6 +114,7 @@ namespace IGLESIA.Data
         public DateTime FechaAceptacion { get; set; }
 
         public string Denominacion { get; set; }
+        public string otradenominacion { get; set; }
 
         public string Iglesia { get; set; }
 

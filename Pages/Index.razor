@@ -1,11 +1,506 @@
 ﻿@page "/"
 @using IGLESIA.Data;
 @inject HttpClient http
-@inject MiemServices   servicios
+@inject MiemServices  objmiembroservice
+@inject NavigationManager NavigationManager
+
+
+
+<h2>Datos Personales</h2>
+<form>
+
+    <label>
+        <h3> Sexo</h3>
+        <input type="radio" name="sexo" checked="@(sexo == "hombre")"
+               @onclick="@(() => sexo="hombre")" />Hombre
+
+        <input type="radio" name="sexo" checked="@(sexo == "mujer")"
+               @onclick="@(() => sexo="mujer")" />Mujer
+        @if (sexo == "hombre")
+        {
+            objmiembro.Sexo = "Hombre";
+
+        }
+        @if (sexo == "mujer")
+        {
+            objmiembro.Sexo = "Mujer";
+
+        }
+    </label>
+    <div class="form-group">
+        <label>
+            Apellidos
+            <input class="form-control" @bind="objmiembro.Apellido" />
+        </label>
+    </div>
+    <div class="form-group">
+        <label>
+            Nombre
+            <input class="form-control" @bind="objmiembro.Nombre" />
+        </label>
+    </div>
+    <div class="form-group">
+        <label>
+            <h3>Foto</h3>
+            <input type="file" />
+        </label>
+    </div>
+    <div class="form-group">
+        <label>
+            <h3>Pais</h3>
+            <select @bind="objmiembro.PaisActual">
+                <option>--Elegir--</option>
+                <option>--Republica Dominicana--</option>
+            </select>
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label>
+            <h3>Ciudad</h3>
+            <input @bind="objmiembro.CiudadActual" />
+        </label>
+    </div>
+    <div class="form-group">
+        <label>
+            <h3>Direccion</h3>
+            <textarea @bind="objmiembro.Direccion" placeholder="Sector/provincia/calle/no."></textarea>
+        </label>
+    </div>
+    <div class="form-group">
+        <label>
+            <h3>Telefono</h3>
+            <input @bind="objmiembro.Telefono" />
+        </label>
+    </div>
+    <div class="form-group">
+        <label>
+            <h3>Tipo de documento</h3>
+            <input type="radio" checked="@(documento == "cedula")"
+                   @onclick="@(() => documento="cedula")" />Cedula
+            <input type="radio" checked="@(documento == "pasaporte")"
+                   @onclick="@(() => documento="pasaporte")" />Pasaporte
+            <input type="radio" checked="@(documento == "dni")"
+                   @onclick="@(() => documento="dni")" />DNI
+
+            @if (documento == "cedula")
+            {
+                objmiembro.DocumentoIdentidad = "Cedula";
+                <h3>Cedula</h3>
+                <input class="form-control" @bind="objmiembro.DocumentoIdentidad" />
+            }
+            @if (documento == "pasaporte")
+            {
+                objmiembro.TipoDocumento = "Pasaporte";
+                <h3>Pasaporte</h3>
+                <input class="form-control" @bind="objmiembro.TipoDocumento" />
+            }
+            @if (documento == "dni")
+            {
+                objmiembro.TipoDocumento = "DNI";
+                <h3>DNI</h3>
+                <input class="form-control" @bind="objmiembro.DocumentoIdentidad" />
+            }
+
+        </label>
+    </div>
+    <h2>Datos personales</h2>
+    <div>
+        <label>
+            <h3>Estado civil</h3>
+            <input type="radio" checked="@(estado == "soltero")"
+                   @onclick="@(() => estado="soltero")" />Soltero(a)
+            <input type="radio" checked="@(estado == "casado")"
+                   @onclick="@(() => estado="casado")" />Casado(a)
+            @if (estado == "soltero")
+            {
+                objmiembro.EstadoCivil = "Soltero(a)";
+
+            }
+            @if (estado == "casado")
+            {
+                objmiembro.EstadoCivil = "Casado(a)";
+                <h3>Nombre de esposo(a)</h3>
+                <input class="form-control" @bind="objmiembro.Pareja" />
+
+            }
+            @if (estado == "soltero")
+            {
+                objmiembro.EstadoCivil = "Soltero(a)";
+            }
+
+        </label>
+    </div>
+    <div>
+        <label>
+            <h3>Hijos</h3>
+            <input type="radio" checked="@(hijo=="si")"
+                   @onclick="@(() => hijo="si")" />Si
+            <input type="radio" checked="@(hijo=="no")"
+                   @onclick="@(() => hijo="no")" />No
+            @if (hijo == "si")
+            {
+                objmiembro.Hijos = "Si";
+                <h3>No. de hijos</h3>
+                <input class="form-control" placeholder="No. hijos" @bind="objmiembro.HijosC" />
+            }
+            @if (hijo == "no")
+            {
+                objmiembro.Hijos = "No";
+
+            }
+        </label>
+    </div>
+    <h2>Datos Laborales</h2>
+    <div>
+        <label>
+            <h3>Profesion</h3>
+            <input class="form-control" @bind="objmiembro.Profesion" />
+        </label>
+    </div>
+    <div>
+        <label>
+            <h3>Nombre de la empresa o negocio</h3>
+            <input class="form-control" @bind="objmiembro.Empresa" />
+        </label>
+    </div>
+    <div>
+        <label>
+            <h3>Ocupacion Actual</h3>
+            <input class="form-control" @bind="objmiembro.Ocupacion" />
+        </label>
+    </div>
+    <div>
+        <label>
+            <h3>Telefono</h3>
+            <input class="form-control" @bind="objmiembro.TelefonoEmpresa" />
+        </label>
+    </div>
+
+    <h2>DATOS ECLESIASTICOS</h2>
+    <div>
+        <label>
+            <h3>Fecha de conversion</h3>
+            <input type="datetime" @bind="objmiembro.FechaConvertido" />
+        </label>
+    </div>
+    <div>
+        <label>
+            <h3>Fecha de bautismo</h3>
+            <input type="datetime" @bind="objmiembro.FechaBautismo" />
+        </label>
+    </div>
+    <div>
+        <label>
+            <h3>Fecha en la que fue aceptado(a) formalmente a la iglesia</h3>
+            <input type="datetime" @bind="objmiembro.FechaAceptacion" />
+        </label>
+    </div>
+
+    <div>
+        <label>
+            <h3>Denominacion a la que pertenece</h3>
+            <input type="radio" checked="@(religion=="bautista")"
+                   @onclick="@(() => religion="bautista")" />Bautista <br />
+            <input type="radio" checked="@(religion=="pentecostal")"
+                   @onclick="@(() => religion="pentecostal")" />Pentecostal <br />
+            <input type="radio" checked="@(religion=="metodista")"
+                   @onclick="@(() => religion="metodista")" />Metodista <br />
+            <input type="radio" checked="@(religion=="catolica")"
+                   @onclick="@(() => religion="catolica")" />Catolica <br />
+            <input type="radio" checked="@(religion=="presbiteriana")"
+                   @onclick="@(() => religion="presbiteriana")" />Presbiteriana <br />
+            <input type="radio" checked="@(religion=="adventista")"
+                   @onclick="@(() => religion="adventista")" />Adventista <br />
+            <input type="radio" checked="@(religion=="templo")"
+                   @onclick="@(() => religion="templo")" />Templo Biblico <br />
+            <input type="radio" checked="@(religion=="menonita")"
+                   @onclick="@(() => religion="menonita")" />Menonita <br />
+            <input type="radio" checked="@(religion=="luterana")"
+                   @onclick="@(() => religion="luterana")" />Luterana <br />
+            <input type="radio" checked="@(religion=="otra")"
+                   @onclick="@(() => religion="otra")" />Otra
+
+            @if (religion == "bautista")
+            {
+                objmiembro.Denominacion = "Bautista";
+
+            }
+            @if (religion == "pentecostal")
+            {
+                objmiembro.Denominacion = "Pentecostal";
+
+            }
+            @if (religion == "metodista")
+            {
+                objmiembro.Denominacion = "Metodista";
+
+            }
+            @if (religion == "catolica")
+            {
+                objmiembro.Denominacion = "Catolica";
+
+            }
+            @if (religion == "presbiteriana")
+            {
+                objmiembro.Denominacion = "Presbiteriana";
+
+            }
+            @if (religion == "adventista")
+            {
+                objmiembro.Denominacion = "Adventista";
+
+            }
+            @if (religion == "templo")
+            {
+                objmiembro.Denominacion = "Templo Biblico";
+
+            }
+            @if (religion == "menonita")
+            {
+                objmiembro.Denominacion = "Menonita";
+
+            }
+            @if (religion == "luterana")
+            {
+                objmiembro.Denominacion = "Luterana";
+
+            }
+            @if (religion == "otra")
+            {
+                <h3>Otra</h3>
+                <input class="form-control" @bind="objmiembro.otradenominacion" />
+
+
+            }
+
+        </label>
+
+    </div>
+    <div>
+        <label>
+            <h3>Nombre de la iglesia a la que asiste</h3>
+            <input class="form-control" @bind="objmiembro.Iglesia" />
+        </label>
+    </div>
+    <div>
+        <label>
+            <h3>Si asiste a esta iglesia por un tiempo menor a un año, ¿dónde se congregaba antes?</h3>
+            <input class="form-control" @bind="objmiembro.IglesiaAnterior" />
+        </label>
+    </div>
+    <div>
+        <label>
+            <h3>Nombre del pastor de su iglesia actual</h3>
+            <input class="form-control" @bind="objmiembro.Pastor" />
+        </label>
+    </div>
+    <div>
+        <label>
+            <h3>Ha sido disiplinado alguna vez?</h3>
+            <input type="radio" checked="@(diciplina=="si")"
+                   @onclick="@(() => diciplina="si")" />Si
+            <input type="radio" checked="@(diciplina=="no")"
+                   @onclick="@(() => diciplina="no")" />No
+            @if (diciplina == "si")
+            {
+                objmiembro.Disciplina = "Si";
+                <h3>Cuantas veces?</h3>
+                <input class="form-control" @bind="objmiembro.DiscipilnaN" /><br />
+                <h3>Causas</h3>
+                <input class="form-control" @bind="objmiembro.Causa" />
+
+            }
+            @if (diciplina == "no")
+            {
+                objmiembro.DiscipilnaN = "No";
+            }
+        </label>
+    </div>
+
+    <div>
+        <label>
+            <h3>En la actualidad ocupa usted alguna de estas funciones?</h3>
+            <input type="radio" checked="@(funcion=="pastor")"
+                   @onclick="@(() => funcion="pastor")" />Pastor
+            <input type="radio" checked="@(funcion=="anciano")"
+                   @onclick="@(() => funcion="anciano")" />Anciano
+            <input type="radio" checked="@(funcion=="diacono")"
+                   @onclick="@(() => funcion="diacono")" />Diacono
+            <input type="radio" checked="@(funcion=="misionero")"
+                   @onclick="@(() => funcion="misionero")" />Misionero
+            <input type="radio" checked="@(funcion=="lider_dominical")"
+                   @onclick="@(() => funcion="lider")" />Lider de Escuela Dominical
+            <input type="radio" checked="@(funcion=="lider_jovenes")"
+                   @onclick="@(() => funcion="lider_jovenes")" />Lider Minist. de Jovenes
+            <input type="radio" checked="@(funcion=="lider_caballeros")"
+                   @onclick="@(() => funcion="lider_caballeros")" />Lider Minist. de Caballeros
+            <input type="radio" checked="@(funcion=="lider_damas")"
+                   @onclick="@(() => funcion="lider_damas")" />Lider Minist. de Damas
+            <input type="radio" checked="@(funcion=="lider_niños")"
+                   @onclick="@(() => funcion="lider_niños")" />Lider Minist. de Niños
+            <input type="radio" checked="@(funcion=="matrimonios")"
+                   @onclick="@(() => funcion="lider_matrimonios")" />Lider Minist. de Matrimonios
+            <input type="radio" checked="@(funcion=="lider_pequeño")"
+                   @onclick="@(() => funcion="lider_pequeño")" />Lider de Grupo Pequeño
+            @if (funcion == "pastor")
+            {
+                objmiembro.Funcion = "Pastor";
+            }
+            @if (funcion == "anciano")
+            {
+                objmiembro.Funcion = "Anciano";
+            }
+            @if (funcion == "diacono")
+            {
+                objmiembro.Funcion = "Diacono";
+            }
+            @if (funcion == "misionero")
+            {
+                objmiembro.Funcion = "Misionero";
+            }
+
+            @if (funcion == "lider_dominical")
+            {
+                objmiembro.Funcion = "Lider de Escuela Dominical";
+            }
+
+            @if (funcion == "lider_jovenes")
+            {
+                objmiembro.Funcion = "Lider de Minist. de Jovenes";
+            }
+            @if (funcion == "lider_caballeros")
+            {
+                objmiembro.Funcion = "Lider de Minist. de Caballeros";
+            }
+            @if (funcion == "lider_damas")
+            {
+                objmiembro.Funcion = "Lider de Minist. de Damas";
+            }
+            @if (funcion == "lider_niños")
+            {
+                objmiembro.Funcion = "Lider de Minist. de Niños";
+            }
+
+            @if (funcion == "matrimonios")
+            {
+                objmiembro.Funcion = "Lider de Minist. de Matrimonios";
+            }
+            @if (funcion == "lider_pequeño")
+            {
+                objmiembro.Funcion = "Lider de Grupo Pequeño";
+            }
+
+        </label>
+    </div>
+    <div>
+        <label>
+            <h3>Cuales son los ministerios en los que ha servido?</h3>
+            <input class="form-control" @bind="objmiembro.MinisteriosServido" />
+        </label>
+    </div>
+    <div>
+        <label>
+            <h3>En cual de estos ministerios considera que tuvo mayor fruto? Por que?</h3>
+            <input class="form-control" @bind="objmiembro.MinisteriosServido" />
+        </label>
+    </div>
+    <div>
+        <label>
+            <h3>Considerando sus dones y talentos, a que ministerio cree usted que Dios lo(a) llamo, Por que?</h3>
+            <input class="form-control" @bind="objmiembro.Don" />
+        </label>
+    </div>
+    <div>
+        <label>
+            <h3>Que metas tiene en su vida?</h3>
+            <input class="form-control" @bind="objmiembro.Vida" />
+        </label>
+    </div>
+    <div>
+        <label>
+            <h3>Cuenta con el respaldo de las autoridades esclesiasticas para realizar estos estudios?</h3>
+            <input type="radio" checked="@(permiso=="si")"
+                   @onclick="@(() => permiso="si")" />Si
+            <input type="radio" checked="@(permiso=="no")"
+                   @onclick="@(() => permiso="no")" />No
+            @if (permiso == "si")
+            {
+                objmiembro.Respaldo = "Si";
+            }
+            @if (permiso == "no")
+            {
+                objmiembro.Respaldo = "No";
+            }
+        </label>
+    </div>
+    <h2>Datos Academicos</h2>
+    <div>
+        <label>
+            <h3>Nivel de estudios</h3>
+            <select>
+                <option></option>
+            </select>
+        </label>
+    </div>
+    <div>
+        <label>
+            <h3>Alguna vez ha sido expulsado o suspendido de alguna institution?</h3>
+            <input type="radio" checked="@(suspendido=="si")"
+                   @onclick="@(() => suspendido="si")" />Si
+            <input type="radio" checked="@(suspendido=="no")"
+                   @onclick="@(() => suspendido="no")" />No
+            @if (suspendido == "si")
+            {
+                objmiembro.RazonExpulsion = "Si";
+                <h3>Por que razon?</h3>
+                <input class="form-control" @bind="objmiembro.Expulsion" />
+            }
+            @if (suspendido == "no")
+            {
+                objmiembro.Expulsion = "No";
+            }
+        </label>
+
+    </div>
+
+    <div>
+        <button class="btn btn-danger" @onclick="@Create">
+            Guardar
+        </button>
+    </div>
+</form>
+
+
+<br />
+<br />
 
 
 
 
+
+
+
+
+
+@code {
+    string suspendido;
+    string permiso;
+    string funcion;
+    string diciplina;
+    string religion;
+    string hijo;
+    string estado;
+    string documento;
+    string sexo;
+    Miembros objmiembro = new Miembros();
+
+    protected void Create()
+    {
+        objmiembroservice.Create(objmiembro);
+        NavigationManager.NavigateTo("RegistroMiembro");
+    }
+}
 
 
 

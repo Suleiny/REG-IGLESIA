@@ -1,16 +1,65 @@
 ﻿@page "/counter"
+@inject HttpClient http
+@inject MiemServices objmiembroservice
+@inject NavigationManager NavigationManager
+@using IGLESIA.Data; 
+<NavLink class="nav-link" href="/page">
+    <span class="oi oi-plus"></span>Añadir Miembros
+</NavLink>
 
-<h1>Counter</h1>
+<h2>Registro de Miembros de la Iglesia</h2>
+@if (lista== null)
+{
+    <p><em>Cargando....</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Id miembro</td>
+                <td>Nombre</td>
+                <td>Pais de nacimiento</td>
+                <td>Estado civil</td>
+                <td>Profesion</td>
+                <td>Religion</td>
+                <td>Iglesia</td>
 
-<p>Current count: @currentCount</p>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var emp in lista)
+            {
+                <tr>
+                    <td>@emp.Id</td>
+                    <td>@emp.Nombre</td>
+                    <td>@emp.PaisOrigen</td>
+                    <td>@emp.EstadoCivil</td>
+                    <td>@emp.Profesion</td>
+                    <td>@emp.Denominacion</td>
+                    <td>@emp.Iglesia</td>
+                    <td>
+                        <a class="btn btn-primary" href="/Editar/@emp.Id">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <a class="btn btn-danger" href="/Borrar/@emp.Id">
+                            <span class="oi oi-trash"></span>
+                        </a>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
 
 @code {
-    private int currentCount = 0;
 
-    private void IncrementCount()
+    List<Miembros> lista;
+    protected override async Task OnInitializedAsync()
     {
-        currentCount++;
+       lista= await Task.Run(() => objmiembroservice.GetMiembros());
     }
+
 }
